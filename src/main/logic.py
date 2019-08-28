@@ -34,9 +34,7 @@ def parse_array_to_csv(matrix, filename):
 
 
 def solve():
-    """Se decide leer/crear archivo segun su existencia.
-    Si existe se carga/continua
-    Si no existe, se lee el archivo de suko"""
+
     menu = Menu()
     try:
         filename = menu.show_options()
