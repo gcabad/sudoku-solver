@@ -124,5 +124,10 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-#IntelliJ IDE
+# IntelliJ IDE
 .idea/
+
+# sudokus savegame
+resources/*.json
+
+

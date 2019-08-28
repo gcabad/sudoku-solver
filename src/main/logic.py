@@ -1,9 +1,14 @@
 import csv
+import os
 
 from src.exception.input_exception import *
+from src.main.menu import Menu
+from src.main.solver import Solver
+import json
 
 
 def parse_csv_to_array(csv_file):
+    # TODO: leer sudokus continuos, agregar manejo de errores si no cumplen la condicion 9x9, retornar lista de matrices
     try:
         reader = csv.reader(open(csv_file, "r"))
         matrix = []
@@ -22,10 +27,32 @@ def parse_csv_to_array(csv_file):
         print(e)
 
 
-def solve(path):
-    matrix = parse_csv_to_array(path)
+def parse_array_to_csv(matrix, filename):
+    writer = csv.writer(open(filename, "w+"), delimiter=",")
+    for row in matrix:
+        writer.writerow(row)
+
+
+def solve():
+    """Se decide leer/crear archivo segun su existencia.
+    Si existe se carga/continua
+    Si no existe, se lee el archivo de suko"""
+    menu = Menu()
+    try:
+        filename = menu.show_options()
+        path = "../../resources/" + filename + ".json"
+        if os.path.exists(path):
+            matrix = json.load(open(path, "r"))
+            menu.show_savegame_found(filename)
+        else:
+            menu.show_savegame_not_found(filename)
+            matrix = parse_csv_to_array("../../resources/sudokus.csv")
+        solver = Solver(matrix)
+        json.dump(solver.matrix, open(path, "w+"))
+    except KeyboardInterrupt:
+        menu.show_keyboard_interrupt(filename)
+        json.dump(filename, open(path, "w+"))
 
 
 if __name__ == '__main__':
-    m = parse_csv_to_array("../../resources/sudokus.csv")
-    print(m)
+    solve()

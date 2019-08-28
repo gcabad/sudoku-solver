@@ -9,14 +9,14 @@ class TestMenu(TestCase):
 
     def test_validInput(self):
         with mock.patch('builtins.input', return_value=1):
-            assert self.menu.show_menu() == 1
+            assert self.menu.show_options() == 1
         with mock.patch('builtins.input', return_value=2):
-            assert self.menu.show_menu() == 2
+            assert self.menu.show_options() == 2
         with mock.patch('builtins.input', return_value=3):
-            assert self.menu.show_menu() == 3
+            assert self.menu.show_options() == 3
 
     def test_invalidInput(self):
-        self.menu.show_menu()
+        self.menu.show_options()
         TestCase().assertRaises(expected_exception=ValueError)
 
 
