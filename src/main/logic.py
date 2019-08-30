@@ -56,7 +56,8 @@ def solve():
                 matrix = parse_csv_to_array("../../resources/sudokus.csv")
         solver = Solver(matrix)
         solver.solve()
-        json.dump(solver.get_matrix(), open(path, "w+"))
+        print(matrix == solver.get_matrix())
+        # json.dump(solver.get_matrix(), open(path, "w+"))
     except KeyboardInterrupt:
         menu.show_keyboard_interrupt(filename)
         json.dump(filename, open(path, "w+"))
