@@ -34,19 +34,29 @@ def parse_array_to_csv(matrix, filename):
 
 
 def solve():
-
     menu = Menu()
     try:
         filename = menu.show_options()
         path = "../../resources/" + filename + ".json"
-        if os.path.exists(path):
-            matrix = json.load(open(path, "r"))
-            menu.show_savegame_found(filename)
+        matrix = []
+        if filename == "":
+            row = []
+            for i in range(9):
+                row.append(0)
+            for i in range(9):
+                matrix.append(row)
+            filename = "auto_generated"
+            path = "../../resources/" + filename + ".json"
         else:
-            menu.show_savegame_not_found(filename)
-            matrix = parse_csv_to_array("../../resources/sudokus.csv")
+            if os.path.exists(path):
+                matrix = json.load(open(path, "r"))
+                menu.show_savegame_found(filename)
+            else:
+                menu.show_savegame_not_found(filename)
+                matrix = parse_csv_to_array("../../resources/sudokus.csv")
         solver = Solver(matrix)
-        json.dump(solver.matrix, open(path, "w+"))
+        solver.solve()
+        json.dump(solver.get_matrix(), open(path, "w+"))
     except KeyboardInterrupt:
         menu.show_keyboard_interrupt(filename)
         json.dump(filename, open(path, "w+"))

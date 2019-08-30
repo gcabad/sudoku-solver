@@ -1,6 +1,11 @@
+import json
+import random
+
+
 class Solver(object):
 
     def __init__(self, matrix):
+        self.count = 0
         self.matrix = matrix
 
     def get_empty(self, coor):
@@ -41,23 +46,26 @@ class Solver(object):
     def solve(self):
         # TODO: fix backtracking
 
-        l = [0, 0]
-        if self.get_empty(l) == [-1, -1]:
+        coor = [0, 0]
+        if self.get_empty(coor) == [-1, -1]:
             return True
-        row = l[0]
-        col = l[1]
 
         for num in range(1, 10):
-            if self.is_placeable(row, col, num):
-                # make tentative assignment
-                self.matrix[row][col] = num
-
-                # return, if success, ya!
+            if self.is_placeable(coor[0], coor[1], num):
+                self.matrix[coor[0]][coor[1]] = num
+                self.__incrementCount()
+                # json.dump(self.matrix, open("../../resources/test/" + str(self.increment()) + ".json", "w+"))
                 if self.solve():
                     return True
-
-                # failure, unmake & try again
-                self.matrix[row][col] = 0
-
-        # this triggers backtracking
+                else:
+                    self.matrix[coor[0]][coor[1]] = 0
         return False
+
+    def get_matrix(self):
+        return self.matrix
+
+    def __incrementCount(self):
+        self.count += 1
+
+    def get_count(self):
+        return self.count

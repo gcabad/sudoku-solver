@@ -11,7 +11,7 @@ class Menu(object):
 
     def show_options(self):
         menu = "Para resolver un sudoku:\n" \
-               "Ingrese el nombre de un nuevo sudoku, o uno anteriormente guardado\n" \
+               "Ingrese el nombre de un nuevo sudoku, o uno anteriormente guardado, o ingrese ENTER para resolver un sudoku vacio\n" \
                "Para interrumpir la ejecucion y guardarla, ingrese el comando CTRL + C\n"
         return input(menu)
 
