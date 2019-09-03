@@ -53,10 +53,11 @@ def solve():
                 menu.show_savegame_found(filename)
             else:
                 menu.show_savegame_not_found(filename)
-                matrix = parse_csv_to_array("../../resources/sudokus.csv")
+                matrix = parse_csv_to_array("../../resources/sudokuReJodido.csv")
         solver = Solver(matrix)
         solver.solve()
         print(matrix == solver.get_matrix())
+        print(solver.get_matrix())
         # json.dump(solver.get_matrix(), open(path, "w+"))
     except KeyboardInterrupt:
         menu.show_keyboard_interrupt(filename)
