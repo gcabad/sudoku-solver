@@ -8,7 +8,7 @@ from src.main.logic import *
 class SolverTest(TestCase):
 
     def setUp(self):
-        self.solver = Solver(parse_csv_to_array("../../resources/sudokus.csv"))
+        self.solver = Solver(parse_csv("../../resources/sudokus.csv"))
 
     def test_not_null(self):
         first = self.solver.get_matrix()

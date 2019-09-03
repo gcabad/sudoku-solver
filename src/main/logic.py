@@ -1,67 +1,54 @@
 import csv
-import os
 
-from src.exception.input_exception import *
-from src.main.menu import Menu
-from src.main.solver import Solver
-import json
+from .exception.exceptions import *
+from .solver import Solver
 
 
-def parse_csv_to_array(csv_file):
-    # TODO: leer sudokus continuos, agregar manejo de errores si no cumplen la condicion 9x9, retornar lista de matrices
+def parse_csv(csv_file):
+    # TODO: Size verification
     try:
         reader = csv.reader(open(csv_file, "r"))
+        list_matrix = []
         matrix = []
-        # Convierte el csv a un 2D array
         for line in reader:
             row = []
-            for litem in line:
-                row.append(int(litem))
-            if len(row) != 9:
-                raise InputException("El sudoku no es de tamaño 9")
+            for item in line:
+                row.append(int(item))
             matrix.append(row)
-        if len(matrix) != 9:
-            raise InputException("El sudoku no es de tamaño 9")
-        return matrix
+            if len(matrix) == 9:
+                list_matrix.append(matrix)
+                matrix = []
+        return list_matrix
     except FileNotFoundError as e:
+        print(e)
+    except MalformedSudokuException as e:
         print(e)
 
 
-def parse_array_to_csv(matrix, filename):
-    writer = csv.writer(open(filename, "w+"), delimiter=",")
-    for row in matrix:
-        writer.writerow(row)
+def parse_array_to_csv(list_matrix, filename):
+    with open(filename, "w", newline='') as file:
+        writer = csv.writer(file)
+        for matrix in list_matrix:
+            for row in matrix:
+                writer.writerow(row)
 
 
 def solve():
-    menu = Menu()
+    resolved_matrix = []
     try:
-        filename = menu.show_options()
-        path = "../../resources/" + filename + ".json"
-        matrix = []
-        if filename == "":
-            row = []
-            for i in range(9):
-                row.append(0)
-            for i in range(9):
-                matrix.append(row)
-            filename = "auto_generated"
-            path = "../../resources/" + filename + ".json"
-        else:
-            if os.path.exists(path):
-                matrix = json.load(open(path, "r"))
-                menu.show_savegame_found(filename)
-            else:
-                menu.show_savegame_not_found(filename)
-                matrix = parse_csv_to_array("../../resources/sudokuReJodido.csv")
-        solver = Solver(matrix)
-        solver.solve()
-        print(matrix == solver.get_matrix())
-        print(solver.get_matrix())
-        # json.dump(solver.get_matrix(), open(path, "w+"))
+        list_matrix = parse_csv("../../resources/sudokuChain.csv")
+        for matrix in list_matrix:
+            solver = Solver(matrix)
+            solver.solve()
+            resolved_matrix.append(solver.get_matrix())
+        parse_array_to_csv(resolved_matrix, "../../resources/asd.csv")
     except KeyboardInterrupt:
-        menu.show_keyboard_interrupt(filename)
-        json.dump(filename, open(path, "w+"))
+        parse_array_to_csv(resolved_matrix, "../../resources/save.csv")
+
+
+# TODO: Interaccion con usuario
+def sudoku_solve():
+    pass
 
 
 if __name__ == '__main__':
