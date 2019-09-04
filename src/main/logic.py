@@ -18,6 +18,8 @@ def parse_csv(csv_file):
             if len(matrix) == 9:
                 list_matrix.append(matrix)
                 matrix = []
+        if len(matrix) != 9 and len(matrix[0]) != 9:
+            raise MalformedSudokuException
         return list_matrix
     except FileNotFoundError as e:
         print(e)
@@ -33,19 +35,6 @@ def parse_array_to_csv(list_matrix, filename):
                 writer.writerow(row)
 
 
-def solve():
-    resolved_matrix = []
-    try:
-        list_matrix = parse_csv("../../resources/sudokuChain.csv")
-        for matrix in list_matrix:
-            solver = Solver(matrix)
-            solver.solve()
-            resolved_matrix.append(solver.get_matrix())
-        parse_array_to_csv(resolved_matrix, "../../resources/asd.csv")
-    except KeyboardInterrupt:
-        parse_array_to_csv(resolved_matrix, "../../resources/save.csv")
-
-
 def solve_path(path):
     resolved_matrix = []
     try:
@@ -54,25 +43,24 @@ def solve_path(path):
             solver = Solver(matrix)
             solver.solve()
             resolved_matrix.append(solver.get_matrix())
-        parse_array_to_csv(resolved_matrix, "../../resources/ArchivoResuelto.csv")
+        parse_array_to_csv(resolved_matrix, "resources/ArchivoResuelto.csv")
     except KeyboardInterrupt:
-        parse_array_to_csv(resolved_matrix, "../../resources/Parcial.csv")
+        parse_array_to_csv(resolved_matrix, "resources/Parcial.csv")
 
 
 def solve_empty():
     resolved_matrix = []
     try:
-        list_matrix = parse_csv("../../resources/emptySudoku.csv")
+        list_matrix = parse_csv("resources/emptySudoku.csv")
         for matrix in list_matrix:
             solver = Solver(matrix)
             solver.solveEmpty()
             resolved_matrix.append(solver.get_matrix())
-        parse_array_to_csv(resolved_matrix, "../../resources/ArchivoResuelto.csv")
+        parse_array_to_csv(resolved_matrix, "resources/ArchivoResuelto.csv")
     except KeyboardInterrupt:
-        parse_array_to_csv(resolved_matrix, "../../resources/Parcial.csv")
+        parse_array_to_csv(resolved_matrix, "resources/Parcial.csv")
 
 
-# TODO: Interaccion con usuario
 def sudoku_solve():
     print("¡Bienvenido al Sudoku Solver!".center(60, "="))
     print("Por favor, ingrese el número correspondiente a la opción que desea realizar:")

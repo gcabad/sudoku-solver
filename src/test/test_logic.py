@@ -1,10 +1,9 @@
 from unittest import TestCase
 
-import src.main.logic as e
+import src.main.logic as logic
 
 
 class TestGetMenuInput(TestCase):
 
     def test_parse_input_file(self):
-        matrix = e.parse_csv(e.parse_csv("resources/sudokus.csv"))
-        print(matrix)
+        logic.parse_csv()
