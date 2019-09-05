@@ -5,25 +5,20 @@ from src.main.solver import Solver
 
 
 def parse_csv(csv_file):
-    try:
-        reader = csv.reader(open(csv_file, "r"))
-        list_matrix = []
-        matrix = []
-        for line in reader:
-            row = []
-            for item in line:
-                row.append(int(item))
-            matrix.append(row)
-            if len(matrix) != 9 and len(matrix[0]) != 9:
-                raise MalformedSudokuException
-            if len(matrix) == 9:
-                list_matrix.append(matrix)
-                matrix = []
-        return list_matrix
-    except FileNotFoundError as e:
-        print(e)
-    except MalformedSudokuException as e:
-        print(e)
+    reader = csv.reader(open(csv_file, "r"))
+    list_matrix = []
+    matrix = []
+    for line in reader:
+        row = []
+        for item in line:
+            row.append(int(item))
+        matrix.append(row)
+        if len(matrix) != 9 and len(matrix[0]) != 9:
+            raise MalformedSudokuException
+        if len(matrix) == 9:
+            list_matrix.append(matrix)
+            matrix = []
+    return list_matrix
 
 
 def parse_array_to_csv(list_matrix, filename):
@@ -71,7 +66,14 @@ def sudoku_solve():
                         "5) Salir.\n")
         if choice1 == "1":
             file_path = input("Por favor, complete el path del archivo que desea utilizar:\n")
-            solve_path(file_path)
+            try:
+                solve_path(file_path)
+            except MalformedSudokuException as e:
+                print(e.strerror)
+                continue
+            except FileNotFoundError as e:
+                print(e.strerror)
+                continue
             print("Finalizado.")
             break
         elif choice1 == "2":
