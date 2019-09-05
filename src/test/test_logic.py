@@ -1,9 +1,10 @@
 from unittest import TestCase
 
 import src.main.logic as logic
+from src.main.exception.exceptions import *
 
 
-class TestGetMenuInput(TestCase):
+class TestLogic(TestCase):
 
     def test_parse_input_file(self):
-        logic.parse_csv()
+        self.assertRaises(MalformedSudokuException, logic.parse_csv("resources/malformed_sudoku.csv"))

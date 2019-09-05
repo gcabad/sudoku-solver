@@ -1,6 +1,5 @@
 from unittest import TestCase, mock
 from src.main.menu import Menu
-from src.main.logic import Menu
 
 
 class TestMenu(TestCase):

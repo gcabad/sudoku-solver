@@ -15,11 +15,11 @@ def parse_csv(csv_file):
             for item in line:
                 row.append(int(item))
             matrix.append(row)
+            if len(matrix) != 9 and len(matrix[0]) != 9:
+                raise MalformedSudokuException
             if len(matrix) == 9:
                 list_matrix.append(matrix)
                 matrix = []
-        if len(matrix) != 9 and len(matrix[0]) != 9:
-            raise MalformedSudokuException
         return list_matrix
     except FileNotFoundError as e:
         print(e)
