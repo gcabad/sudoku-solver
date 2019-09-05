@@ -5,7 +5,6 @@ from src.main.solver import Solver
 
 
 def parse_csv(csv_file):
-    # TODO: Size verification
     try:
         reader = csv.reader(open(csv_file, "r"))
         list_matrix = []
@@ -68,8 +67,8 @@ def sudoku_solve():
         choice1 = input("1) Resolver uno o varios tableros de sudoku en un archivo de formato CSV.\n"
                         "2) Continuar una ejecución parcial.\n"
                         "3) Resolver un sudoku en blanco.\n"
-                        "3) Datos del grupo.\n"
-                        "4) Salir.\n")
+                        "4) Datos del grupo.\n"
+                        "5) Salir.\n")
         if choice1 == "1":
             file_path = input("Por favor, complete el path del archivo que desea utilizar:\n")
             solve_path(file_path)
@@ -81,6 +80,7 @@ def sudoku_solve():
             n = input("Comenzaremos a resolver un sudoku de N cosos. Por favor, inserte el numero de cosos.")
 
             # Debería funcionar con N cosos.
+            # Medio incheckeable
 
             solve_empty()
         elif choice1 == "4":
