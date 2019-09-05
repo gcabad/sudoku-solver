@@ -78,9 +78,10 @@ def sudoku_solve():
     print("Por favor, ingrese el número correspondiente a la opción que desea realizar:")
     while True:
         choice1 = input("1) Resolver uno o varios tableros de sudoku en un archivo de formato CSV.\n"
-                        "2) Continuar una ejecución parcial\n"
+                        "2) Continuar una ejecución parcial.\n"
+                        "3) Resolver un sudoku en blanco.\n"
                         "3) Datos del grupo.\n"
-                        "4) Salir\n")
+                        "4) Salir.\n")
         if choice1 == "1":
             file_path = input("Por favor, complete el path del archivo que desea utilizar:\n")
             solve_path(file_path)
@@ -88,10 +89,15 @@ def sudoku_solve():
             break
         elif choice1 == "2":
             print("elegiste 2")
-            solve_empty()
         elif choice1 == "3":
+            n = input("Comenzaremos a resolver un sudoku de N cosos. Por favor, inserte el numero de cosos.")
+
+            # Debería funcionar con N cosos.
+
+            solve_empty()
+        elif choice1 == "4":
             print("Sudoku solver realizado por Toloza, Tomas y Abad, Gonzalo.")
-        elif choice1 == "4" or choice1 == "salir":
+        elif choice1 == "5" or choice1 == "salir":
             exit()
         else:
             print("Por favor, introduzca una opción valida.")
