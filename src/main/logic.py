@@ -42,7 +42,9 @@ def solve_path(path):
             resolved_matrix.append(solver.get_matrix())
         parse_array_to_csv(resolved_matrix, "resources/ArchivoResuelto.csv")
     except KeyboardInterrupt:
-        parse_array_to_csv(save_parcial(resolved_matrix, list_matrix), "resources/Parcial.csv")
+        file_name = input("Ejecucion interrumpida.\n"
+                          "Introduzca nombre del archivo donde quiera guardar la ejecucion parcial")
+        parse_array_to_csv(save_parcial(resolved_matrix, list_matrix), "resources/" + file_name + ".csv")
 
 
 # TODO: iterar lista de n, guardar posicion si se corta, clone el archivo y que reemplaze lo resuelto
