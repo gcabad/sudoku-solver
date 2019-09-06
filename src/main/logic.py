@@ -5,7 +5,10 @@ from src.main.solver import Solver
 
 
 def parse_csv(csv_file):
-    reader = csv.reader(open(csv_file, "r"))
+    file = open(csv_file, "r")
+    if not csv_file.endswith(".csv"):
+        raise InvalidFileExtensionException("Introduzca un archivo de extension .csv")
+    reader = csv.reader(file)
     list_matrix = []
     matrix = []
     for line in reader:
@@ -14,7 +17,7 @@ def parse_csv(csv_file):
             row.append(int(item))
         matrix.append(row)
         if len(matrix) != 9 and len(matrix[0]) != 9:
-            raise MalformedSudokuException
+            raise MalformedSudokuException("Introduzca un sudoku de tamaño 9x9")
         if len(matrix) == 9:
             list_matrix.append(matrix)
             matrix = []
@@ -22,7 +25,7 @@ def parse_csv(csv_file):
 
 
 def parse_array_to_csv(list_matrix, filename):
-    with open(filename, "w", newline='') as file:
+    with open(filename, "w+", newline='') as file:
         writer = csv.writer(file)
         for matrix in list_matrix:
             for row in matrix:
@@ -39,20 +42,35 @@ def solve_path(path):
             resolved_matrix.append(solver.get_matrix())
         parse_array_to_csv(resolved_matrix, "resources/ArchivoResuelto.csv")
     except KeyboardInterrupt:
-        parse_array_to_csv(resolved_matrix, "resources/Parcial.csv")
+        parse_array_to_csv(save_parcial(resolved_matrix, list_matrix), "resources/Parcial.csv")
 
 
-def solve_empty():
-    resolved_matrix = []
+# TODO: iterar lista de n, guardar posicion si se corta, clone el archivo y que reemplaze lo resuelto
+def solve_empty(n):
     try:
-        list_matrix = parse_csv("resources/emptySudoku.csv")
-        for matrix in list_matrix:
-            solver = Solver(matrix)
-            solver.solveEmpty()
-            resolved_matrix.append(solver.get_matrix())
-        parse_array_to_csv(resolved_matrix, "resources/ArchivoResuelto.csv")
+        solver = Solver(create_empty_matrix(n))
+        solver.solveEmpty(n)
+        # TODO: imprimir tablita
+        solver.get_matrix()
     except KeyboardInterrupt:
-        parse_array_to_csv(resolved_matrix, "resources/Parcial.csv")
+        parse_array_to_csv(solver.get_matrix(), "resources/Parcial.csv")
+
+
+def save_parcial(solved, not_solved):
+    parcial_list = solved[:]
+    for x in range(len(solved), len(not_solved)):
+        parcial_list.append(not_solved[x])
+    return parcial_list
+
+
+def create_empty_matrix(n):
+    matrix = []
+    for _ in range(1, n + 1):
+        row = []
+        for _ in range(1, n + 1):
+            row.append(0)
+        matrix.append(row)
+    return matrix
 
 
 def sudoku_solve():
@@ -69,10 +87,13 @@ def sudoku_solve():
             try:
                 solve_path(file_path)
             except MalformedSudokuException as e:
-                print(e.strerror)
+                print("\x1b[31m" + str(e) + "\x1b[39m")
                 continue
             except FileNotFoundError as e:
-                print(e.strerror)
+                print("\x1b[31m" + str(e.strerror) + "\x1b[39m")
+                continue
+            except InvalidFileExtensionException as e:
+                print("\x1b[31m" + str(e) + "\x1b[39m")
                 continue
             print("Finalizado.")
             break
@@ -80,11 +101,8 @@ def sudoku_solve():
             print("elegiste 2")
         elif choice1 == "3":
             n = input("Comenzaremos a resolver un sudoku de N cosos. Por favor, inserte el numero de cosos.")
-
-            # Debería funcionar con N cosos.
-            # Medio incheckeable
-
-            solve_empty()
+            # TODO: Devolver tabla y funcionar con N cosos
+            solve_empty(n)
         elif choice1 == "4":
             print("Sudoku solver realizado por Toloza, Tomas y Abad, Gonzalo.")
         elif choice1 == "5" or choice1 == "salir":

@@ -1,5 +1,4 @@
 import json
-import random
 
 
 class Solver(object):
@@ -55,12 +54,11 @@ class Solver(object):
         for num in range(1, 10):
             if self.is_placeable(coor[0], coor[1], num):
                 self.matrix[coor[0]][coor[1]] = num
-                self.__incrementCount()
-                # json.dump(self.matrix, open("../../resources/test/" + str(self.increment()) + ".json", "w+"))
                 if self.solve():
                     return True
                 else:
                     self.matrix[coor[0]][coor[1]] = 0
+        self.__incrementCount()
         return False
 
     def get_matrix(self):
@@ -91,13 +89,11 @@ class Solver(object):
                 return True
         return False
 
-
     def is_in_col_aux(self, n, col, auxMatrix):
         for row in range(9):
             if auxMatrix[row][col] == n:
                 return True
         return False
-
 
     def is_in_box_aux(self, start_row, start_col, n, auxMatrix):
         for row in range(3):
@@ -106,33 +102,30 @@ class Solver(object):
                     return True
         return False
 
-
     def is_placeable_aux(self, row, col, n, auxMatrix):
         return not self.is_in_row_aux(n, row, auxMatrix) \
                and not self.is_in_col_aux(n, col, auxMatrix) \
                and not self.is_in_box_aux(row - row % 3, col - col % 3, n, auxMatrix)
 
-
-    def solveEmpty(self):
-        auxMatrix = self.matrix[:]
+    def solveEmpty(self, n):
         coor = [0, 0]
         firstcoor = [0, 0]
-        if self.get_empty_aux(coor, auxMatrix) == [-1, -1] or len(self.solutions) == 10:
+        if self.get_empty_aux(coor, self.matrix) == [-1, -1] or len(self.solutions) == 10:
             return True
 
-        for num in range(1, 10):
-            if self.is_placeable_aux(coor[0], coor[1], num, auxMatrix) and not len(self.solutions) == 10:
-                auxMatrix[coor[0]][coor[1]] = num
-                if self.solveEmpty():
-                    print(auxMatrix)
-                    self.solutions.append(auxMatrix)
+        for num in range(1, n + 1):
+            if self.is_placeable_aux(coor[0], coor[1], num, self.matrix) and not len(self.solutions) == 10:
+                self.matrix[coor[0]][coor[1]] = num
+                if self.solveEmpty(n):
+                    print(self.matrix)
+                    self.solutions.append(self.matrix)
                     print(len(self.solutions))
                     if len(self.solutions) == 10:
-                        print(self.solutions)
-                        break;
+                        # print(self.solutions)
+                        break
                     else:
                         if coor == firstcoor:
-                            auxMatrix[coor[0]][coor[1]] = 0
+                            self.matrix[coor[0]][coor[1]] = 0
                 else:
-                    auxMatrix[coor[0]][coor[1]] = 0
+                    self.matrix[coor[0]][coor[1]] = 0
         return False
