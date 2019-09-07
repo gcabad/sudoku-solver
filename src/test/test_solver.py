@@ -1,14 +1,15 @@
+import math
 from unittest import TestCase
 
 from src.main.solver import Solver
-
+import numpy as np
 from src.main.logic import *
 
 
 class SolverTest(TestCase):
 
     def setUp(self):
-        self.solver = Solver(parse_csv("../main/resources/sudokuChain.csv"))
+        pass
 
     def test_not_null(self):
         first = self.solver.get_matrix()
@@ -17,5 +18,13 @@ class SolverTest(TestCase):
         assert first != last
 
     def test_solve_empty(self):
-        n = 9
-        solve_empty(9)
+        empty = create_empty_matrix(16)
+        self.solver = Solver(empty)
+        self.solver.solve()
+        print(np.matrix(self.solver.get_matrix()))
+
+    def test_solve_empty_32(self):
+        empty = create_empty_matrix(25)
+        self.solver = Solver(empty)
+        self.solver.solve()
+        print(np.matrix(self.solver.get_matrix()))
