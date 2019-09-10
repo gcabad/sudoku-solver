@@ -64,6 +64,26 @@ class Solver(object):
         self.__incrementCount()
         return False
 
+    def solve_empty(self):
+        coor = [0, 0]
+        if self.get_empty(coor) == [-1, -1]:
+            return True
+        for num in range(1, len(self.get_matrix()) + 1):
+            if len(self.solutions) >= 10:
+                break
+            if self.is_placeable(coor[0], coor[1], num):
+                self.matrix[coor[0]][coor[1]] = num
+                if self.solve_empty():
+                    solution = []
+                    for x in self.matrix:
+                        row = x[:]
+                        solution.append(row)
+                    self.solutions.append(solution)
+                    self.matrix[coor[0]][coor[1]] = 0
+                else:
+                    self.matrix[coor[0]][coor[1]] = 0
+        return False
+
     def get_matrix(self):
         return self.matrix
 
