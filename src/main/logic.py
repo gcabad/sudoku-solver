@@ -48,7 +48,8 @@ def solve_path(path):
 
 
 # TODO: iterar lista de n, guardar posicion si se corta, clone el archivo y que reemplaze lo resuelto
-def solve_empty(n):
+def \
+        solve_empty(n):
     try:
         solver = Solver(create_empty_matrix(n))
         solver.solveEmpty(n)
@@ -67,9 +68,9 @@ def save_parcial(solved, not_solved):
 
 def create_empty_matrix(n):
     matrix = []
-    for _ in range(1, n + 1):
+    for _ in range(n):
         row = []
-        for _ in range(1, n + 1):
+        for _ in range(n):
             row.append(0)
         matrix.append(row)
     return matrix
