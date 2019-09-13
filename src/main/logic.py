@@ -51,8 +51,7 @@ def solve_path(path):
         parse_array_to_csv(save_parcial(resolved_matrix, list_matrix), "resources/" + file_name + ".csv")
 
 
-# TODO: iterar lista de n, guardar posicion si se corta, clone el archivo y que reemplaze lo resuelto
-def solve_empty(r, result):
+def solve_empty(r):
     try:
         start = time.time()
         solver = Solver(create_empty_matrix(r ** 2))
@@ -114,7 +113,7 @@ def sudoku_solve():
             result = []
             for n in range(table.get_last_iteration() , 6):
                 print("Resolviendo un sudoku de {}x{}".format(n, n))
-                result.append(solve_empty(n, result))
+                result.append(solve_empty(n))
             table.append_table(result)
         elif choice1 == "4":
             print("Sudoku solver realizado por Toloza, Tomas y Abad, Gonzalo.")
