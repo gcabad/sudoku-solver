@@ -1,4 +1,5 @@
 import csv
+import time
 
 from src.main.exception.exceptions import *
 from src.main.solver import Solver
@@ -40,7 +41,7 @@ def solve_path(path):
             solver = Solver(matrix)
             solver.solve()
             resolved_matrix.append(solver.get_matrix())
-        parse_array_to_csv(resolved_matrix, "resources/ArchivoResuelto.csv")
+        parse_array_to_csv(resolved_matrix, "resources/archivo_resuelto.csv")
     except KeyboardInterrupt:
         file_name = input("Ejecucion interrumpida.\n"
                           "Introduzca nombre del archivo donde quiera guardar la ejecucion parcial")
@@ -48,15 +49,16 @@ def solve_path(path):
 
 
 # TODO: iterar lista de n, guardar posicion si se corta, clone el archivo y que reemplaze lo resuelto
-def \
-        solve_empty(n):
+def solve_empty(r, result):
     try:
-        solver = Solver(create_empty_matrix(n))
-        solver.solveEmpty(n)
-        # TODO: imprimir tablita
-        solver.get_matrix()
+        start = time.time()
+        solver = Solver(create_empty_matrix(r ** 2))
+        solver.solve_empty()
+        finish = time.time()
+        return "{}    {}".format(str(r), finish - start)
     except KeyboardInterrupt:
-        parse_array_to_csv(solver.get_matrix(), "resources/Parcial.csv")
+        save_table(result)
+        exit()
 
 
 def save_parcial(solved, not_solved):
@@ -74,6 +76,36 @@ def create_empty_matrix(n):
             row.append(0)
         matrix.append(row)
     return matrix
+
+
+def create_r(n):
+    r = []
+    for num in range(n, 64):
+        r.append(num)
+    return r
+
+
+def get_last_r():
+    try:
+        with open("resources/lil_table.csv", "r") as file:
+            reader = list(csv.reader(file))
+            last_row = reader[len(reader) - 1][0].split(" ")[0]
+            if not last_row.startswith("-"):
+                return int(last_row)
+            else:
+                return 3
+    except FileNotFoundError:
+        return 3
+
+
+def save_table(result):
+    with open("resources/lil_table.csv", "w+") as file:
+        writer = csv.writer(file)
+        writer.writerow(["R     Time"])
+        writer.writerow(["-" * 10])
+        # for res in result:
+        print(result)
+        writer.writerow(result)
 
 
 def sudoku_solve():
@@ -103,9 +135,14 @@ def sudoku_solve():
         elif choice1 == "2":
             print("elegiste 2")
         elif choice1 == "3":
-            n = input("Comenzaremos a resolver un sudoku de N cosos. Por favor, inserte el numero de cosos.")
-            # TODO: Devolver tabla y funcionar con N cosos
-            solve_empty(n)
+            # TODO: Devolver tabla y funcionar con N cosos. Guardar tablita e iterar de la ultima posicion + 1
+            r = create_r(get_last_r())  # ultima posicion
+            result = []
+            for n in r:
+                print(n)
+                result.append(solve_empty(n,result))
+            save_table(result)
+
         elif choice1 == "4":
             print("Sudoku solver realizado por Toloza, Tomas y Abad, Gonzalo.")
         elif choice1 == "5" or choice1 == "salir":
