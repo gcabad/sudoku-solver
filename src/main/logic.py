@@ -3,6 +3,9 @@ import time
 
 from src.main.exception.exceptions import *
 from src.main.solver import Solver
+from src.main.table import Table
+
+table = Table()
 
 
 def parse_csv(csv_file):
@@ -55,9 +58,8 @@ def solve_empty(r, result):
         solver = Solver(create_empty_matrix(r ** 2))
         solver.solve_empty()
         finish = time.time()
-        return "{}    {}".format(str(r), finish - start)
+        table.append_table("{}    {}".format(str(r), finish - start))
     except KeyboardInterrupt:
-        save_table(result)
         exit()
 
 
@@ -76,35 +78,6 @@ def create_empty_matrix(n):
             row.append(0)
         matrix.append(row)
     return matrix
-
-
-def create_r(n):
-    r = []
-    for num in range(n, 64):
-        r.append(num)
-    return r
-
-
-def get_last_r():
-    try:
-        with open("resources/lil_table.csv", "r") as file:
-            reader = list(csv.reader(file))
-            last_row = reader[len(reader) - 1][0].split(" ")[0]
-            if not last_row.startswith("-"):
-                return int(last_row)
-            else:
-                return 3
-    except FileNotFoundError:
-        return 3
-
-
-def save_table(result):
-    with open("resources/lil_table.csv", "w+") as file:
-        writer = csv.writer(file)
-        writer.writerow(["R     Time"])
-        writer.writerow(["-" * 10])
-        for res in result:
-            writer.writerow([res])
 
 
 def print_error(error):
@@ -138,13 +111,11 @@ def sudoku_solve():
         elif choice1 == "2":
             print("elegiste 2")
         elif choice1 == "3":
-            # TODO: Devolver tabla y funcionar con N cosos. Guardar tablita e iterar de la ultima posicion + 1
-            r = create_r(get_last_r())  # ultima posicion
             result = []
-            for n in r:
+            for n in range(table.get_last_iteration() , 6):
+                print("Resolviendo un sudoku de {}x{}".format(n, n))
                 result.append(solve_empty(n, result))
-            save_table(result)
-
+            table.append_table(result)
         elif choice1 == "4":
             print("Sudoku solver realizado por Toloza, Tomas y Abad, Gonzalo.")
         elif choice1 == "5" or choice1 == "salir":

@@ -129,6 +129,7 @@ dmypy.json
 
 # sudokus savegame
 resources/*.json
-src/main/resources/test/*
+src/test/resources/*
+src/main/resources/*.csv
 
 
