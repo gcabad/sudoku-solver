@@ -103,9 +103,8 @@ def save_table(result):
         writer = csv.writer(file)
         writer.writerow(["R     Time"])
         writer.writerow(["-" * 10])
-        # for res in result:
-        print(result)
-        writer.writerow(result)
+        for res in result:
+            writer.writerow([res])
 
 
 def print_error(error):
@@ -143,7 +142,6 @@ def sudoku_solve():
             r = create_r(get_last_r())  # ultima posicion
             result = []
             for n in r:
-                print(n)
                 result.append(solve_empty(n, result))
             save_table(result)
 
