@@ -108,6 +108,10 @@ def save_table(result):
         writer.writerow(result)
 
 
+def print_error(error):
+    print("\x1b[31m" + error + "\x1b[39m")
+
+
 def sudoku_solve():
     print("¡Bienvenido al Sudoku Solver!".center(60, "="))
     print("Por favor, ingrese el número correspondiente a la opción que desea realizar:")
@@ -122,13 +126,13 @@ def sudoku_solve():
             try:
                 solve_path(file_path)
             except MalformedSudokuException as e:
-                print("\x1b[31m" + str(e) + "\x1b[39m")
+                print_error(str(e))
                 continue
             except FileNotFoundError as e:
-                print("\x1b[31m" + str(e.strerror) + "\x1b[39m")
+                print_error(str(e.strerror))
                 continue
             except InvalidFileExtensionException as e:
-                print("\x1b[31m" + str(e) + "\x1b[39m")
+                print_error(str(e))
                 continue
             print("Finalizado.")
             break
@@ -140,7 +144,7 @@ def sudoku_solve():
             result = []
             for n in r:
                 print(n)
-                result.append(solve_empty(n,result))
+                result.append(solve_empty(n, result))
             save_table(result)
 
         elif choice1 == "4":
