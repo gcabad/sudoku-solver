@@ -85,42 +85,52 @@ def print_error(error):
 
 def sudoku_solve():
     print("¡Bienvenido al Sudoku Solver!".center(60, "="))
-    print("Por favor, ingrese el número correspondiente a la opción que desea realizar:")
-    while True:
-        choice1 = input("1) Resolver uno o varios tableros de sudoku en un archivo de formato CSV.\n"
-                        "2) Continuar una ejecución parcial.\n"
-                        "3) Resolver un sudoku en blanco.\n"
-                        "4) Datos del grupo.\n"
-                        "5) Salir.\n")
-        if choice1 == "1":
-            file_path = input("Por favor, complete el path del archivo que desea utilizar:\n")
-            try:
-                solve_path(file_path)
-            except MalformedSudokuException as e:
-                print_error(str(e))
-                continue
-            except FileNotFoundError as e:
-                print_error(str(e.strerror))
-                continue
-            except InvalidFileExtensionException as e:
-                print_error(str(e))
-                continue
-            print("Finalizado.")
-            break
-        elif choice1 == "2":
-            print("elegiste 2")
-        elif choice1 == "3":
-            result = []
-            for n in range(table.get_last_iteration() , 6):
-                print("Resolviendo un sudoku de {}x{}".format(n, n))
-                result.append(solve_empty(n))
-            table.append_table(result)
-        elif choice1 == "4":
-            print("Sudoku solver realizado por Toloza, Tomas y Abad, Gonzalo.")
-        elif choice1 == "5" or choice1 == "salir":
-            exit()
-        else:
-            print("Por favor, introduzca una opción valida.")
+    try:
+        while True:
+            print("Por favor, ingrese el número correspondiente a la opción que desea realizar:")
+            choice1 = input("1) Resolver uno o varios tableros de sudoku en un archivo de formato CSV.\n"
+                            "2) Continuar una ejecución parcial.\n"
+                            "3) Resolver un sudoku en blanco.\n"
+                            "4) Datos del grupo.\n"
+                            "5) Salir.\n")
+            if choice1 == "1":
+                file_path = input("Por favor, complete el path del archivo que desea utilizar:\n")
+                try:
+                    solve_path(file_path)
+                except MalformedSudokuException as e:
+                    print_error(str(e))
+                    continue
+                except FileNotFoundError as e:
+                    print_error(str(e.strerror))
+                    continue
+                except InvalidFileExtensionException as e:
+                    print_error(str(e))
+                    continue
+                except ValueError as e:
+                    print_error("El sudoku contiene caracteres no numericos")
+                    continue
+                print("Finalizado. Ver archivo resuelto en 'resources/archivo_resuelto.csv'")
+                break
+            elif choice1 == "2":
+                pass
+            elif choice1 == "3":
+                solve_empty_increment()
+            elif choice1 == "4":
+                print("Sudoku solver realizado por Toloza, Tomas y Abad, Gonzalo.")
+            elif choice1 == "5" or choice1 == "salir":
+                exit()
+            else:
+                print("Por favor, introduzca una opción valida.")
+    except KeyboardInterrupt:
+        exit()
+
+
+def solve_empty_increment():
+    result = []
+    for n in range(table.get_last_iteration(), 6):
+        print("Resolviendo un sudoku de {}x{}".format(n, n))
+        result.append(solve_empty(n))
+    table.append_table(result)
 
 
 if __name__ == '__main__':
