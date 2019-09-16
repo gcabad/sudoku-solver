@@ -1,4 +1,5 @@
 import csv
+import math
 import time
 
 from src.main.exception.exceptions import *
@@ -27,6 +28,26 @@ def parse_csv(csv_file):
             matrix = []
     return list_matrix
 
+# def parse_csv(csv_file):
+#     with open(csv_file, "r") as file:
+#         if not csv_file.endswith(".csv"):
+#             raise InvalidFileExtensionException("Introduzca un archivo de extension .csv")
+#         reader = csv.reader(file)
+#         matrix = []
+#         list_matrix = []
+#         for row_reader in reader:
+#             row = []
+#             if math.sqrt(len(row_reader)).is_integer():
+#                 for item_reader in row_reader:
+#                     row.append(int(item_reader))
+#             else:
+#                 raise MalformedSudokuException()
+#             matrix.append(row)
+#         if not math.sqrt(len(matrix)).is_integer():
+#             raise MalformedSudokuException()
+#         if len(matrix)
+#         return list_matrix
+
 
 def parse_array_to_csv(list_matrix, filename):
     with open(filename, "w+", newline='') as file:
@@ -37,8 +58,8 @@ def parse_array_to_csv(list_matrix, filename):
 
 
 def solve_path(path):
-    resolved_matrix = []
     try:
+        resolved_matrix = []
         list_matrix = parse_csv(path)
         for matrix in list_matrix:
             solver = Solver(matrix)
@@ -59,7 +80,10 @@ def solve_empty(r):
         finish = time.time()
         table.append_table("{}    {}".format(str(r), finish - start))
     except KeyboardInterrupt:
-        exit()
+        file_name = input("Ejecucion interrumpida.\n"
+                          "Introduzca nombre del archivo donde quiera guardar la ejecucion parcial")
+        parse_array_to_csv(save_parcial([solver.get_matrix()], create_empty_matrix(r ** 2)),
+                           "resources/" + file_name + ".csv")
 
 
 def save_parcial(solved, not_solved):
@@ -94,8 +118,8 @@ def sudoku_solve():
                             "4) Datos del grupo.\n"
                             "5) Salir.\n")
             if choice1 == "1":
-                file_path = input("Por favor, complete el path del archivo que desea utilizar:\n")
                 try:
+                    file_path = input("Por favor, complete el path del archivo que desea utilizar:\n")
                     solve_path(file_path)
                 except MalformedSudokuException as e:
                     print_error(str(e))
@@ -106,13 +130,14 @@ def sudoku_solve():
                 except InvalidFileExtensionException as e:
                     print_error(str(e))
                     continue
-                except ValueError as e:
+                except ValueError:
                     print_error("El sudoku contiene caracteres no numericos")
                     continue
                 print("Finalizado. Ver archivo resuelto en 'resources/archivo_resuelto.csv'")
                 break
             elif choice1 == "2":
-                pass
+                file_path = input("Por favor, complete el path del archivo que desea utilizar:\n")
+                solve_path(file_path)
             elif choice1 == "3":
                 solve_empty_increment()
             elif choice1 == "4":
