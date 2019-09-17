@@ -4,14 +4,14 @@ import csv
 class Table(object):
 
     def create_table(self):
-        with open("resources/lil_table.csv", "w+") as file:
+        with open("resources/lil_table.csv", "w+", newline='') as file:
             writer = csv.writer(file)
             writer.writerow(["R     Time"])
             writer.writerow(["-" * 10])
 
     def append_table(self, result):
         try:
-            with open("resources/lil_table.csv", "a") as file:
+            with open("resources/lil_table.csv", "a", newline='') as file:
                 with open("resources/lil_table.csv", "r") as file_reader:
                     reader = list(csv.reader(file_reader))
                     last_row = reader[len(reader) - 1][0].split(" ")

@@ -8,7 +8,6 @@ from src.main.table import Table
 
 table = Table()
 
-
 def parse_csv(csv_file):
     file = open(csv_file, "r")
     if not csv_file.endswith(".csv"):
@@ -78,12 +77,15 @@ def solve_empty(r):
         solver = Solver(create_empty_matrix(r ** 2))
         solver.solve_empty()
         finish = time.time()
-        table.append_table("{}    {}".format(str(r), finish - start))
+        print(str(r))
+        time_taken = finish - start
+        table.append_table("{}    {}".format(str(r), round(time_taken, 3)))
     except KeyboardInterrupt:
-        file_name = input("Ejecucion interrumpida.\n"
-                          "Introduzca nombre del archivo donde quiera guardar la ejecucion parcial")
-        parse_array_to_csv(save_parcial([solver.get_matrix()], create_empty_matrix(r ** 2)),
-                           "resources/" + file_name + ".csv")
+        finish = time.time()
+        time_taken = finish - start
+        print("Ejecucion interrumpida en r = {}. Tiempo de ejecución tomado: {}".format(str(r), round(time_taken, 3)))
+        file_name = input("Ejecucion interrumpida.\n Introduzca nombre del archivo donde quiera guardar la ejecucion parcial")
+        parse_array_to_csv(save_parcial([solver.get_matrix()], create_empty_matrix(r ** 2)), "resources/" + file_name + ".csv")
 
 
 def save_parcial(solved, not_solved):
@@ -139,6 +141,7 @@ def sudoku_solve():
                 file_path = input("Por favor, complete el path del archivo que desea utilizar:\n")
                 solve_path(file_path)
             elif choice1 == "3":
+                table.create_table()
                 solve_empty_increment()
             elif choice1 == "4":
                 print("Sudoku solver realizado por Toloza, Tomas y Abad, Gonzalo.")
