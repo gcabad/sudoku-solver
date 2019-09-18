@@ -77,8 +77,10 @@ def solve_empty(r):
         solver = Solver(create_empty_matrix(r ** 2))
         solver.solve_empty()
         finish = time.time()
-        print(str(r))
         time_taken = finish - start
+        parse_array_to_csv(solver.solutions, 'resources/empty_sudoku_{}x{}_solutions.csv'.format(str(r**2), (r**2)))
+        print("Finalizado. Ver archivo con las distintas resoluciones en 'resources/empty_sudoku_{}x{}_solutions.csv'".format(str(r**2), (r**2)))
+        print("Tambien puede ver la tabla con los tiempos en resources/lil_table.csv")
         table.append_table("{}    {}".format(str(r), round(time_taken, 3)))
     except KeyboardInterrupt:
         finish = time.time()
