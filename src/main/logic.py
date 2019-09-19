@@ -26,6 +26,7 @@ def parse_csv(csv_file):
         if len(matrix) == 9:
             list_matrix.append(matrix)
             matrix = []
+    file.close()
     return list_matrix
 
 
@@ -66,6 +67,7 @@ def solve_empty(r):
                 str(r ** 2), (r ** 2)))
         print("Tambien puede ver la tabla con los tiempos en resources/lil_table.csv")
         table.append_table("{}    {}".format(str(r), round(time_taken, 3)))
+        return solver.solutions
     except KeyboardInterrupt:
         finish = time.time()
         time_taken = finish - start
