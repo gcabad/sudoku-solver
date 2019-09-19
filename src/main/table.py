@@ -28,12 +28,13 @@ class Table(object):
         try:
             with open("resources/lil_table.csv", "r") as file:
                 reader = list(csv.reader(file))
-                last_row = reader[len(reader) - 1][0].split(" ")
+                last_row = str(reader[len(reader) - 1][0]).split(" ")[0]
                 if last_row[0].startswith("-"):
                     raise IndexError
                 return int(last_row[0]) + 1
-        except FileNotFoundError as e:
+        except FileNotFoundError:
             self.create_table()
+            return self.get_last_iteration()
         except IndexError:
             self.create_table()
             return 3

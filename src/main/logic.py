@@ -8,6 +8,7 @@ from src.main.table import Table
 
 table = Table()
 
+
 def parse_csv(csv_file):
     file = open(csv_file, "r")
     if not csv_file.endswith(".csv"):
@@ -27,26 +28,6 @@ def parse_csv(csv_file):
             matrix = []
     return list_matrix
 
-# def parse_csv(csv_file):
-#     with open(csv_file, "r") as file:
-#         if not csv_file.endswith(".csv"):
-#             raise InvalidFileExtensionException("Introduzca un archivo de extension .csv")
-#         reader = csv.reader(file)
-#         matrix = []
-#         list_matrix = []
-#         for row_reader in reader:
-#             row = []
-#             if math.sqrt(len(row_reader)).is_integer():
-#                 for item_reader in row_reader:
-#                     row.append(int(item_reader))
-#             else:
-#                 raise MalformedSudokuException()
-#             matrix.append(row)
-#         if not math.sqrt(len(matrix)).is_integer():
-#             raise MalformedSudokuException()
-#         if len(matrix)
-#         return list_matrix
-
 
 def parse_array_to_csv(list_matrix, filename):
     with open(filename, "w+", newline='') as file:
@@ -60,15 +41,16 @@ def solve_path(path):
     try:
         resolved_matrix = []
         list_matrix = parse_csv(path)
-        for matrix in list_matrix:
-            solver = Solver(matrix)
-            solver.solve()
+        for matrix in enumerate(list_matrix):
+            solver = Solver(matrix[1])
+            print("Resuelta matriz " + str(
+                matrix[0] + 1) if solver.solve() else "No se pudo resolver la matriz " + str(matrix[0] + 1))
             resolved_matrix.append(solver.get_matrix())
         parse_array_to_csv(resolved_matrix, "resources/archivo_resuelto.csv")
     except KeyboardInterrupt:
         file_name = input("Ejecucion interrumpida.\n"
-                          "Introduzca nombre del archivo donde quiera guardar la ejecucion parcial")
-        parse_array_to_csv(save_parcial(resolved_matrix, list_matrix), "resources/" + file_name + ".csv")
+                          "Introduzca path donde quiera guardar la ejecucion parcial\n")
+        parse_array_to_csv(save_parcial(resolved_matrix, parse_csv(path)), file_name)
 
 
 def solve_empty(r):
@@ -78,16 +60,16 @@ def solve_empty(r):
         solver.solve_empty()
         finish = time.time()
         time_taken = finish - start
-        parse_array_to_csv(solver.solutions, 'resources/empty_sudoku_{}x{}_solutions.csv'.format(str(r**2), (r**2)))
-        print("Finalizado. Ver archivo con las distintas resoluciones en 'resources/empty_sudoku_{}x{}_solutions.csv'".format(str(r**2), (r**2)))
+        parse_array_to_csv(solver.solutions, 'resources/empty_sudoku_{}x{}_solutions.csv'.format(str(r ** 2), (r ** 2)))
+        print(
+            "Finalizado. Ver archivo con las distintas resoluciones en 'resources/empty_sudoku_{}x{}_solutions.csv'".format(
+                str(r ** 2), (r ** 2)))
         print("Tambien puede ver la tabla con los tiempos en resources/lil_table.csv")
         table.append_table("{}    {}".format(str(r), round(time_taken, 3)))
     except KeyboardInterrupt:
         finish = time.time()
         time_taken = finish - start
         print("Ejecucion interrumpida en r = {}. Tiempo de ejecución tomado: {}".format(str(r), round(time_taken, 3)))
-        file_name = input("Ejecucion interrumpida.\n Introduzca nombre del archivo donde quiera guardar la ejecucion parcial")
-        parse_array_to_csv(save_parcial([solver.get_matrix()], create_empty_matrix(r ** 2)), "resources/" + file_name + ".csv")
 
 
 def save_parcial(solved, not_solved):
@@ -112,7 +94,8 @@ def print_error(error):
 
 
 def sudoku_solve():
-    print("¡Bienvenido al Sudoku Solver!".center(60, "="))
+    # print("¡Bienvenido al Sudoku Solver!".center(60, "="))
+    print(open("resources/bienvenida.txt", "r").read(), "\n")
     try:
         while True:
             print("Por favor, ingrese el número correspondiente a la opción que desea realizar:")
@@ -158,10 +141,10 @@ def sudoku_solve():
                 print("Finalizado. Ver archivo resuelto en 'resources/archivo_resuelto.csv'")
                 break
             elif choice1 == "3":
-                table.create_table()
                 solve_empty_increment()
             elif choice1 == "4":
-                print("Sudoku solver realizado por Toloza, Tomas y Abad, Gonzalo.")
+                # print("Sudoku solver realizado por Toloza, Tomas y Abad, Gonzalo.")
+                printear_falopa()
             elif choice1 == "5" or choice1 == "salir":
                 exit()
             else:
@@ -176,6 +159,10 @@ def solve_empty_increment():
         print("Resolviendo un sudoku de {}x{}".format(n, n))
         result.append(solve_empty(n))
     table.append_table(result)
+
+
+def printear_falopa():
+    print(open("resources/falopa.txt", "r").read())
 
 
 if __name__ == '__main__':

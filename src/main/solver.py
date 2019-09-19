@@ -58,7 +58,6 @@ class Solver(object):
                     return True
                 else:
                     self.matrix[coor[0]][coor[1]] = 0
-        print(numpy.matrix(self.matrix))
         self.__incrementCount()
         return False
 
