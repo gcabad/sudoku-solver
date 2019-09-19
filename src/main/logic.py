@@ -140,8 +140,23 @@ def sudoku_solve():
                 print("Finalizado. Ver archivo resuelto en 'resources/archivo_resuelto.csv'")
                 break
             elif choice1 == "2":
-                file_path = input("Por favor, complete el path del archivo que desea utilizar:\n")
-                solve_path(file_path)
+                try:
+                    file_path = input("Por favor, complete el path del archivo que desea utilizar:\n")
+                    solve_path(file_path)
+                except MalformedSudokuException as e:
+                    print_error(str(e))
+                    continue
+                except FileNotFoundError as e:
+                    print_error(str(e.strerror))
+                    continue
+                except InvalidFileExtensionException as e:
+                    print_error(str(e))
+                    continue
+                except ValueError:
+                    print_error("El sudoku contiene caracteres no numericos")
+                    continue
+                print("Finalizado. Ver archivo resuelto en 'resources/archivo_resuelto.csv'")
+                break
             elif choice1 == "3":
                 table.create_table()
                 solve_empty_increment()
