@@ -56,8 +56,19 @@ class SolverTest(TestCase):
         TestCase().assertEqual(len(solutions), 10)
         print("OK.")
 
+    def test_solutions(self):
+        empty = create_empty_matrix(9)
+        self.solver = Solver(empty)
+        self.solver.solve_empty()
+        print(self.solver.solutions)
+        for num in range(len(self.solver.solutions)):
+            for num2 in range(num + 1, len(self.solver.solutions)):
+                TestCase().assertNotEqual(self.solver.solutions[num], self.solver.solutions[num2])
+        print("OK.")
+
 if __name__ == '__main__':
     SolverTest().test_solved()
     SolverTest().test_solve_empty_9x9()
     SolverTest().test_solve_empty_16x16()
     SolverTest().test_10_solution()
+    SolverTest().test_solutions()

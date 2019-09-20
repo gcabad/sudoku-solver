@@ -96,7 +96,7 @@ def print_error(error):
 
 def sudoku_solve():
     # print("¡Bienvenido al Sudoku Solver!".center(60, "="))
-    print(open("resources/bienvenida.txt", "r").read(), "\n")
+    print(open("resources/bienvenida.txt", "r",encoding="utf8").read(), "\n")
     try:
         while True:
             print("Por favor, ingrese el número correspondiente a la opción que desea realizar:")
@@ -155,7 +155,6 @@ def sudoku_solve():
 
 
 def solve_empty_increment():
-    result = []
     for n in range(table.get_last_iteration(), 6):
         print("Resolviendo un sudoku de {}x{}".format(n, n))
         solve_empty(n)
