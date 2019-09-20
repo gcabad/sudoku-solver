@@ -71,7 +71,6 @@ def solve_empty(r):
         finish = time.time()
         time_taken = finish - start
         print("Ejecucion interrumpida en r = {}. Tiempo de ejecución tomado: {}".format(str(r), round(time_taken, 3)))
-        exit()
 
 
 def save_parcial(solved, not_solved):
@@ -159,8 +158,7 @@ def solve_empty_increment():
     result = []
     for n in range(table.get_last_iteration(), 6):
         print("Resolviendo un sudoku de {}x{}".format(n, n))
-        result.append(solve_empty(n))
-    table.append_table(result)
+        solve_empty(n)
 
 
 def printear_falopa():
