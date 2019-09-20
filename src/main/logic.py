@@ -1,10 +1,10 @@
 import csv
-import math
+import sys
 import time
 
-from src.main.exception.exceptions import *
-from src.main.solver import Solver
-from src.main.table import Table
+from exception.exceptions import *
+from solver import Solver
+from table import Table
 
 table = Table()
 
@@ -67,11 +67,11 @@ def solve_empty(r):
                 str(r ** 2), (r ** 2)))
         print("Tambien puede ver la tabla con los tiempos en resources/lil_table.csv")
         table.append_table("{}    {}".format(str(r), round(time_taken, 3)))
-        return solver.solutions
     except KeyboardInterrupt:
         finish = time.time()
         time_taken = finish - start
         print("Ejecucion interrumpida en r = {}. Tiempo de ejecución tomado: {}".format(str(r), round(time_taken, 3)))
+        exit()
 
 
 def save_parcial(solved, not_solved):
@@ -123,7 +123,7 @@ def sudoku_solve():
                     print_error("El sudoku contiene caracteres no numericos")
                     continue
                 print("Finalizado. Ver archivo resuelto en 'resources/archivo_resuelto.csv'")
-                break
+                continue
             elif choice1 == "2":
                 try:
                     file_path = input("Por favor, complete el path del archivo que desea utilizar:\n")
@@ -141,18 +141,18 @@ def sudoku_solve():
                     print_error("El sudoku contiene caracteres no numericos")
                     continue
                 print("Finalizado. Ver archivo resuelto en 'resources/archivo_resuelto.csv'")
-                break
+                continue
             elif choice1 == "3":
                 solve_empty_increment()
             elif choice1 == "4":
                 # print("Sudoku solver realizado por Toloza, Tomas y Abad, Gonzalo.")
                 printear_falopa()
             elif choice1 == "5" or choice1 == "salir":
-                exit()
+                raise KeyboardInterrupt
             else:
                 print("Por favor, introduzca una opción valida.")
     except KeyboardInterrupt:
-        exit()
+        sys.exit()
 
 
 def solve_empty_increment():

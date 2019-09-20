@@ -1,9 +1,9 @@
 import math
+import os
 from unittest import TestCase
 
-from src.main.solver import Solver
-import numpy as np
-from src.main.logic import *
+from solver import Solver
+from logic import *
 
 
 class SolverTest(TestCase):
@@ -11,7 +11,7 @@ class SolverTest(TestCase):
     def setUp(self):
         pass
 
-    def test_not_null(self):
+    def test_solved(self):
         test_sudoku = [[0,8,0,5,7,6,2,0,0],
                  [0,0,0,4,0,2,0,0,0],
                  [0,0,0,0,3,9,5,4,8],
@@ -29,27 +29,35 @@ class SolverTest(TestCase):
         self.solver.solve()
         last = self.solver.get_matrix()
         print(first)
-        assert first != last
+        TestCase().assertNotEqual(first,last)
+        print("OK.")
 
     def test_solve_empty_9x9(self):
         empty = create_empty_matrix(9)
         self.solver = Solver(empty)
         self.solver.solve_empty()
-        print(self.solver.get_matrix())
+        TestCase().assertIsNotNone(self.solver.solutions)
+        print("OK.")
 
     def test_solve_empty_16x16(self):
         empty = create_empty_matrix(16)
         self.solver = Solver(empty)
-        self.solver.solve_empty()
-        print(np.matrix(self.solver.get_matrix()))
+        TestCase().assertIsNotNone(self.solver.solutions)
+        print("OK.")
 
     def test_10_solution(self):
         empty = create_empty_matrix(9)
         self.solver = Solver(empty)
         self.solver.solve_empty()
-
-        print(len(self.solver.solutions))
         solutions = []
         for matrix in self.solver.solutions:
             if matrix not in solutions:
                 solutions.append(matrix)
+        TestCase().assertEqual(len(solutions), 10)
+        print("OK.")
+
+if __name__ == '__main__':
+    SolverTest().test_solved()
+    SolverTest().test_solve_empty_9x9()
+    SolverTest().test_solve_empty_16x16()
+    SolverTest().test_10_solution()
