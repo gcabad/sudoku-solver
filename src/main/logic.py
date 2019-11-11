@@ -155,7 +155,7 @@ def sudoku_solve():
 
 
 def solve_empty_increment():
-    for n in range(table.get_last_iteration(), 6):
+    for n in range(table.get_last_iteration(), 10):
         print("Resolviendo un sudoku de {}x{}".format(n, n))
         solve_empty(n)
 
